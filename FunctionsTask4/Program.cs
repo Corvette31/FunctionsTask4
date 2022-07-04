@@ -48,7 +48,7 @@ namespace FunctionsTask4
                 ChangePosition(map, ref userPositionX, ref userPositionY);
                 ChangeBag(map, ref bag, userPositionX, userPositionY);
 
-                isRun = CheckExit(map,userPositionX,userPositionY) == false;
+                isRun = CheckExit(map, userPositionX, userPositionY) == false;
                 map[userPositionX, userPositionY] = '$';
             }
 
@@ -66,7 +66,7 @@ namespace FunctionsTask4
                     Console.Write(map[i, j]);
                 }
                 Console.WriteLine();
-            }           
+            }
         }
 
         static void ChangePosition(char[,] map, ref int positionX, ref int positionY)
@@ -77,16 +77,16 @@ namespace FunctionsTask4
             switch (key.Key)
             {
                 case ConsoleKey.UpArrow:
-                    SetPosition(map, ref positionX, ref positionY, positionX - 1, positionY, true);
+                    SetPosition(map, ref positionX, ref positionY, -1, 0);
                     break;
                 case ConsoleKey.DownArrow:
-                    SetPosition(map, ref positionX, ref positionY, positionX + 1, positionY, true);
+                    SetPosition(map, ref positionX, ref positionY, 1, 0);
                     break;
                 case ConsoleKey.LeftArrow:
-                    SetPosition(map, ref positionX, ref positionY, positionX, positionY - 1, false);
+                    SetPosition(map, ref positionX, ref positionY, 0, -1);
                     break;
                 case ConsoleKey.RightArrow:
-                    SetPosition(map, ref positionX, ref positionY, positionX, positionY + 1, false);
+                    SetPosition(map, ref positionX, ref positionY, 0, 1);
                     break;
             }
         }
@@ -98,7 +98,7 @@ namespace FunctionsTask4
             for (int i = 0; i < bag.Length; i++)
             {
                 Console.Write($"{bag[i]} ");
-            }         
+            }
         }
 
         static void ExpandBag(ref char[] array, int size, char newItem)
@@ -142,18 +142,12 @@ namespace FunctionsTask4
             return false;
         }
 
-        static void SetPosition(char[,] map, ref int currentUserPositionX, ref int currentuserPositionY, int newUserPositionX, int newUserPositionY, bool isCheskPositionX)
+        static void SetPosition(char[,] map, ref int currentUserPositionX, ref int currentuserPositionY, int newUserPositionX, int newUserPositionY)
         {
-            if (CheckBorder(map, newUserPositionX, newUserPositionY) == false)
+            if (CheckBorder(map, currentUserPositionX + newUserPositionX, currentuserPositionY + newUserPositionY) == false)
             {
-                if (isCheskPositionX)
-                {
-                    currentUserPositionX = newUserPositionX;
-                }
-                else
-                {
-                    currentuserPositionY = newUserPositionY;
-                }
+                currentUserPositionX = currentUserPositionX + newUserPositionX;
+                currentuserPositionY = currentuserPositionY + newUserPositionY;
             }
         }
     }
