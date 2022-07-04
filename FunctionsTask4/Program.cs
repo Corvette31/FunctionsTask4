@@ -77,28 +77,16 @@ namespace FunctionsTask4
             switch (key.Key)
             {
                 case ConsoleKey.UpArrow:
-                    if (CheckBorder(map, positionX - 1, positionY) == false) 
-                    {
-                        positionX--;
-                    }
+                    SetPosition(map, ref positionX, ref positionY, positionX - 1, positionY, true);
                     break;
                 case ConsoleKey.DownArrow:
-                    if (CheckBorder(map, positionX + 1, positionY) == false) 
-                    {
-                        positionX++;
-                    }
+                    SetPosition(map, ref positionX, ref positionY, positionX + 1, positionY, true);
                     break;
                 case ConsoleKey.LeftArrow:
-                    if (CheckBorder(map, positionX, positionY - 1) == false)
-                    {
-                        positionY--;
-                    }
+                    SetPosition(map, ref positionX, ref positionY, positionX, positionY - 1, false);
                     break;
                 case ConsoleKey.RightArrow:
-                    if (CheckBorder(map, positionX, positionY + 1) == false)
-                    {
-                        positionY++;
-                    }
+                    SetPosition(map, ref positionX, ref positionY, positionX, positionY + 1, false);
                     break;
             }
         }
@@ -152,6 +140,21 @@ namespace FunctionsTask4
             }
 
             return false;
+        }
+
+        static void SetPosition(char[,] map, ref int currentUserPositionX, ref int currentuserPositionY, int newUserPositionX, int newUserPositionY, bool isCheskPositionX)
+        {
+            if (CheckBorder(map, newUserPositionX, newUserPositionY) == false)
+            {
+                if (isCheskPositionX)
+                {
+                    currentUserPositionX = newUserPositionX;
+                }
+                else
+                {
+                    currentuserPositionY = newUserPositionY;
+                }
+            }
         }
     }
 }
