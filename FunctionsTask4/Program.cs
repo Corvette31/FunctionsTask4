@@ -29,23 +29,30 @@ namespace FunctionsTask4
                 },
                 { '#', ' ', ' ', '#', ' ', ' ', ' ', ' ', ' ', '#'
                 },
-                { '#', ' ', ' ', '#', ' ', 'X', ' ', ' ', ' ', '#'
+                { '#', ' ', ' ', '#', ' ', 'X', ' ', ' ', 'E', '#'
                 },
                 { '#', '#', '#', '#', '#', '#', '#', '#', '#', '#'
                 },
             };
-            int userX = 2;
-            int userY = 2;
-            char[] bag = { }; 
+            int userPositionX = 2;
+            int userPositionY = 2;
+            char[] bag = { };
+            bool isRun = true;
 
-            map[userX, userY] = '$';
+            map[userPositionX, userPositionY] = '$';
 
-            while (true)
+            while (isRun)
             {
                 DrawMap(map);
                 DrawBag(bag);
-                ChangePosition(map, ref userX, ref userY, ref bag);
+                ChangePosition(map, ref userPositionX, ref userPositionY);
+                ChangeBag(map, ref bag, userPositionX, userPositionY);
+
+                isRun = CheckExit(map,userPositionX,userPositionY);
+                map[userPositionX, userPositionY] = '$';
             }
+
+            Console.WriteLine("GAME OVER");
         }
 
         static void DrawMap(char[,] map)
@@ -62,48 +69,38 @@ namespace FunctionsTask4
             }           
         }
 
-        static void ChangePosition(char[,] map, ref int userX, ref int userY, ref char[] bag)
+        static void ChangePosition(char[,] map, ref int positionX, ref int positionY)
         {
             ConsoleKeyInfo key = Console.ReadKey();
-            map[userX, userY] = ' ';
+            map[positionX, positionY] = ' ';
 
             switch (key.Key)
             {
                 case ConsoleKey.UpArrow:
-                    if (map[userX - 1, userY] != '#')
+                    if (map[positionX - 1, positionY] != '#')
                     {
-                        userX--;
+                        positionX--;
                     }
                     break;
                 case ConsoleKey.DownArrow:
-                    if (map[userX + 1, userY] != '#')
+                    if (map[positionX + 1, positionY] != '#')
                     {
-                        userX++;
+                        positionX++;
                     }
                     break;
                 case ConsoleKey.LeftArrow:
-                    if (map[userX, userY - 1] != '#')
+                    if (map[positionX, positionY - 1] != '#')
                     {
-                        userY--;
+                        positionY--;
                     }
                     break;
                 case ConsoleKey.RightArrow:
-                    if (map[userX, userY + 1] != '#')
+                    if (map[positionX, positionY + 1] != '#')
                     {
-                        userY++;
+                        positionY++;
                     }
                     break;
-                default:
-                    break;
             }
-
-            if (map[userX, userY] == 'X')
-            {
-                ResizeArray(ref bag, bag.Length + 1);
-                bag[bag.Length - 1] = 'X';
-            }
-
-            map[userX, userY] = '$';
         }
 
         static void DrawBag(char[] bag)
@@ -116,7 +113,7 @@ namespace FunctionsTask4
             }         
         }
 
-        static void ResizeArray(ref char[] array, int size)
+        static void ExpandBag(ref char[] array, int size, char newItem)
         {
             char[] tempArray = new char[size];
 
@@ -125,7 +122,26 @@ namespace FunctionsTask4
                 tempArray[i] = array[i];
             }
 
+            tempArray[tempArray.Length - 1] = newItem;
             array = tempArray;
+        }
+
+        static void ChangeBag(char[,] map, ref char[] bag, int userPositionX, int userPositionY)
+        {
+            if (map[userPositionX, userPositionY] == 'X')
+            {
+                ExpandBag(ref bag, bag.Length + 1, 'X');
+            }
+        }
+
+        static bool CheckExit(char[,] map, int userPositionX, int userPositionY)
+        {
+            if (map[userPositionX, userPositionY] == 'E')
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }
