@@ -48,7 +48,7 @@ namespace FunctionsTask4
                 ChangePosition(map, ref userPositionX, ref userPositionY);
                 ChangeBag(map, ref bag, userPositionX, userPositionY);
 
-                isRun = CheckExit(map,userPositionX,userPositionY);
+                isRun = CheckExit(map,userPositionX,userPositionY) == false;
                 map[userPositionX, userPositionY] = '$';
             }
 
@@ -77,25 +77,25 @@ namespace FunctionsTask4
             switch (key.Key)
             {
                 case ConsoleKey.UpArrow:
-                    if (map[positionX - 1, positionY] != '#')
+                    if (CheckBorder(map, positionX - 1, positionY) == false) 
                     {
                         positionX--;
                     }
                     break;
                 case ConsoleKey.DownArrow:
-                    if (map[positionX + 1, positionY] != '#')
+                    if (CheckBorder(map, positionX + 1, positionY) == false) 
                     {
                         positionX++;
                     }
                     break;
                 case ConsoleKey.LeftArrow:
-                    if (map[positionX, positionY - 1] != '#')
+                    if (CheckBorder(map, positionX, positionY - 1) == false)
                     {
                         positionY--;
                     }
                     break;
                 case ConsoleKey.RightArrow:
-                    if (map[positionX, positionY + 1] != '#')
+                    if (CheckBorder(map, positionX, positionY + 1) == false)
                     {
                         positionY++;
                     }
@@ -138,10 +138,20 @@ namespace FunctionsTask4
         {
             if (map[userPositionX, userPositionY] == 'E')
             {
-                return false;
+                return true;
             }
 
-            return true;
+            return false;
+        }
+
+        static bool CheckBorder(char[,] map, int userPositionX, int userPositionY)
+        {
+            if (map[userPositionX, userPositionY] == '#')
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }
